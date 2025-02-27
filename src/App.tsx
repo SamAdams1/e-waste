@@ -1,33 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
 
+const localKey = "ewasteCount"
+function getData() {
+  let localCount = localStorage.getItem(localKey)
+
+    if (localCount) {
+      console.log(localCount)
+      return parseInt(localCount)
+    } else {
+      localStorage.setItem(localKey, "0")
+      return 0
+    }
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(getData)
+  
+  
+  useEffect(() => {
+    
+  }, []) // fetch database data at start of program
+
+  useEffect(() => {
+    localStorage.setItem(localKey, count.toString())
+  }, [count])
+  
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>SNHU E-Waste</h1>
       <div className="card">
+        <h2>Number of laptops: {count}</h2>
         <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+          +
+        </button>
+        <button onClick={() => setCount((count) => count - 1)}>
+          -
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
