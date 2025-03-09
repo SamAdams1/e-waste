@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import Header from "./components/header";
+import MapPage from "./components/MapPage";
+import DatabasePage from "./components/DatabasePage";
 
 const localKey = "ewasteCount";
 function getData() {
@@ -32,18 +35,11 @@ function App() {
         />
         <h1>SNHU E-Waste</h1>
         <div className="headerButtons">
-          <button>Map</button>
-          <button>Database</button>
+          <button onClick={() => setCurrentPage("map")}>Map</button>
+          <button onClick={() => setCurrentPage("database")}>Database</button>
         </div>
       </div>
-      <div className="card">
-        <h2>Number of laptops: {count}</h2>
-        <button onClick={() => setCount((count) => count + 1)}>+</button>
-        <button onClick={() => setCount((count) => count - 1)}>-</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <div>{currentPage == "map" ? <MapPage /> : <DatabasePage />}</div>
     </>
   );
 }
