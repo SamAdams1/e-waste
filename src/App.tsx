@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import Header from "./components/header";
+import Header from "./components/Header";
 import MapPage from "./components/MapPage";
 import DatabasePage from "./components/DatabasePage";
 
@@ -18,12 +18,12 @@ function getData() {
 }
 
 function App() {
-  const [count, setCount] = useState(getData);
+  const [data, setData] = useState(getData);
   const [currentPage, setCurrentPage] = useState("map");
 
   useEffect(() => {
-    localStorage.setItem(localKey, count.toString());
-  }, [count]);
+    localStorage.setItem(localKey, data.toString());
+  }, [data]);
 
   return (
     <>

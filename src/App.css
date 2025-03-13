@@ -1,4 +1,4 @@
-/* #root {
+#root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,10 +39,17 @@
 
 .read-the-docs {
   color: #888;
-} */
+}
 
 .header {
   display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background-color: whitesmoke;
+  width: 100%;
+  color: black;
 }
 .headerButtons {
   display: flex;
