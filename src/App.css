@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   text-align: center;
 }
 
@@ -43,17 +43,24 @@
 
 .header {
   display: flex;
-  position: absolute;
+  /* position: absolute; */
   top: 0;
   left: 0;
 
   background-color: whitesmoke;
-  width: 100%;
+  width: 100vw;
   color: black;
 }
 .headerButtons {
   display: flex;
 }
 .snhuLogo {
-  height: 4em;
+  height: 7em;
+}
+
+table {
+}
+td, th {
+  border: 1px solid white;
+  padding: 1em;
 }
