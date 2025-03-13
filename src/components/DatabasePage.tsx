@@ -13,6 +13,8 @@ const DatabasePage = () => {
     <div>
       {/* <img src="src\assets\tablePlaceholder.png" alt="" /> */}
       <table>
+        <tbody>
+
         <tr>
           {databaseSchema.map((columnName)=>{
             return <th>{columnName}</th>
@@ -25,7 +27,7 @@ const DatabasePage = () => {
           ))}
           </tr>
         ))}
-
+        </tbody>
       </table>
     </div>
   );

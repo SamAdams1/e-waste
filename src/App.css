@@ -59,8 +59,14 @@
 }
 
 table {
+  /* width: 100vw; */
 }
 td, th {
   border: 1px solid white;
   padding: 1em;
+}
+
+.map {
+  height: 400px;
+  width: 100%;
 }
