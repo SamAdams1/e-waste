@@ -33,7 +33,7 @@ function App() {
           alt="snhuLogo"
           className="snhuLogo"
         />
-        <h1>SNHU E-Waste</h1>
+        <h1>EWaste</h1>
         <div className="headerButtons">
           <button onClick={() => setCurrentPage("map")}>Map</button>
           <button onClick={() => setCurrentPage("database")}>Database</button>

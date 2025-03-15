@@ -13,13 +13,12 @@ const defaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = defaultIcon;
-
+// 43.03460, -71.452031
 const MapPage = () => {
-  const position: [number, number] = [51.505, -0.09]; // Default position (London)
+  const position: [number, number] = [43.040755, -71.451845]; // Default position (London)
 
   return (
-    <div>
-      {typeof window !== "undefined" && (<MapContainer className="map">
+      <MapContainer center={position} zoom={16} className="map">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -29,9 +28,6 @@ const MapPage = () => {
           <Popup> A marker in London </Popup>
         </Marker>
       </MapContainer>
-      )}
-      {/* <img src="src\assets\snhuMap.png" alt="" /> */}
-    </div>
   );
 };
 
