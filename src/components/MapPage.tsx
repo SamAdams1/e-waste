@@ -19,7 +19,7 @@ const MapPage = () => {
   const buildingPositions: any = [
     { 
       buildingName: "Student Center",
-      latLon: [43.039, -71.4539]
+      latLon: [43.03975424423455, -71.4537540534146]
     },
     { 
       buildingName: "Kingston",
