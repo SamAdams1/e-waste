@@ -1,7 +1,7 @@
-import React from "react";
+import { useState, useEffect } from "react";
 
 import "leaflet/dist/leaflet.css"; // Import Leaflet styles
-import L from "leaflet";
+import L, { map } from "leaflet";
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -11,6 +11,8 @@ const defaultIcon = L.icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
+
+
 
 L.Marker.prototype.options.icon = defaultIcon;
 // 43.03460, -71.452031
@@ -58,6 +60,23 @@ const MapPage = () => {
       latLon: [43.03988859416745, -71.44554884579253]
     },
   ]
+  const [mapData, setMapData] = useState(getMapData);
+  
+
+  async function getMapData() {
+    fetch("http://localhost:9090/ewaste/get").then( response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      // console.log(response)
+      return response.json()
+    })
+  }
+
+  useEffect(() => {
+    console.log(mapData)
+  }, [mapData]);
+
   return (
       <MapContainer center={center} zoom={16} className="map">
         <TileLayer

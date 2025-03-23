@@ -19,7 +19,7 @@ function getData() {
 
 function App() {
   const [data, setData] = useState(getData);
-  const [currentPage, setCurrentPage] = useState("map");
+  const [currentPage, setCurrentPage] = useState("database");
 
   useEffect(() => {
     localStorage.setItem(localKey, data.toString());
