@@ -61,7 +61,10 @@ const MapPage = () => {
     },
   ]
   const [mapData, setMapData] = useState(getMapData);
-  
+
+  const corner1 = L.latLng(43.05608052417522, -71.47025574018889)
+  const corner2 = L.latLng(43.026883091146004, -71.43616876214308)
+  const mapBounds = L.latLngBounds(corner1, corner2)  
 
   async function getMapData() {
     fetch("http://localhost:9090/ewaste/get").then( response => {
@@ -78,7 +81,7 @@ const MapPage = () => {
   }, [mapData]);
 
   return (
-      <MapContainer center={center} zoom={16} className="map">
+      <MapContainer center={center} zoom={16} className="map" maxBounds={mapBounds} minZoom={14} maxZoom={17}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
