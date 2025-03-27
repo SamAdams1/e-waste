@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { IEwaste } from "../models/Ewaste";
+import Card from "./Card";
 
-const databaseSchema = ["id", "type", " weight", "battery", "data_wiped", "bin"] //column names
+const databaseSchema = ["id", "type", " weight", "battery", "data_wiped", "bin", ""] //column names
 
 interface mongoResponse { ewaste: [IEwaste]}
 
@@ -43,13 +44,10 @@ const DatabasePage = () => {
           ))}
         </tr>
           {databaseData.map( (obj, index) => (
-        <tr key={index + obj.type}>
+      <tr key={index + obj.type}>
             <td>{index}</td>
-            <td>{obj.type}</td>
-            <td>{obj.weight}</td>
-            <td>{obj.battery + ""}</td>
-            <td>{obj.data_wiped + ""}</td>
-            <td>{obj.bin}</td>
+
+            <Card type={obj.type} weight={obj.weight} battery={obj.battery} bin={obj.bin} data_wiped={obj.data_wiped}/>
         </tr>
           ))}
         {/* {databaseData.length.map((row, rowIndex) => (
