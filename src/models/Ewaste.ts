@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IEwaste {
+    _id: string;
     type: string;
     weight: number;
     battery: boolean;
@@ -8,7 +9,9 @@ export interface IEwaste {
     bin: number;
 }
 
-export interface IEwasteModel extends IEwaste, Document {}
+export interface IEwasteModel extends IEwaste, Document {
+    _id: string;
+}
 
 const EwasteSchema: Schema = new Schema(
     {
