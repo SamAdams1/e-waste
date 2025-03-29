@@ -54,7 +54,7 @@ const DatabasePage = () => {
     fetchData();
   }, []);
 
-  // Example usage: baked in update
+  // "Update Record" button when clicked runs this
   const handleUpdateClick = (id: string) => {
     // Example update: put the variables in here in the future. For now it's just baked in data.
     const updatedFields = { type: "laptopiguess", weight: 100, battery: true, data_wiped: true, bin: 5 };
@@ -82,7 +82,7 @@ const DatabasePage = () => {
                   data_wiped={obj.data_wiped}
                 />
               <td>
-                {/* right now is baked update */}
+                {/* Update Record button, run handleUpdateClick when clicked */}
                 <button onClick={() => handleUpdateClick(obj._id)}>
                   Update Record
                 </button>
