@@ -24,25 +24,7 @@ const DatabasePage = () => {
     }
   };
 
-  // update a row's data
-  const updateEwaste = async (id: string, updatedFields: Partial<IEwaste>) => {
-    try {
-      const response = await fetch(`http://localhost:9090/ewaste/update/${id}`, {
-        method: "PATCH", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedFields),
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to update ewaste with id ${id}`);
-      }
-      // After update ok, refresh data. Is it ok to use it like this? What happens if it's not in useEffect, is it ok?
-      fetchData();
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
 
   const fetchData = async () => {
     const data = await getDatabaseData();
@@ -54,12 +36,7 @@ const DatabasePage = () => {
     fetchData();
   }, []);
 
-  // "Update Record" button when clicked runs this
-  const handleUpdateClick = (id: string) => {
-    // Example update: put the variables in here in the future. For now it's just baked in data.
-    const updatedFields = { type: "laptopiguess", weight: 100, battery: true, data_wiped: true, bin: 5 };
-    updateEwaste(id, updatedFields);
-  };
+  
 
   return !databaseData ? (<>loading...</>) : (
     <div>
@@ -81,12 +58,6 @@ const DatabasePage = () => {
                   bin={obj.bin}
                   data_wiped={obj.data_wiped}
                 />
-              <td>
-                {/* Update Record button, run handleUpdateClick when clicked */}
-                <button onClick={() => handleUpdateClick(obj._id)}>
-                  Update Record
-                </button>
-              </td>
             </tr>
           ))}
           {/* {databaseData.length.map((row, rowIndex) => (

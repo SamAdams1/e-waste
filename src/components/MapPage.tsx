@@ -79,7 +79,7 @@ const MapPage = () => {
   useEffect(() => {
     console.log(mapData)
   }, [mapData]);
-
+  
   return (
       <MapContainer center={center} zoom={16} className="map" maxBounds={mapBounds} minZoom={14} maxZoom={17}>
         <TileLayer
