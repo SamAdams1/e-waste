@@ -16,7 +16,6 @@ const defaultIcon = L.divIcon({
   html: `
     <div style="position: relative; width: 50px; height: 50px;">
       
-      <-- First image: FULL marker, cropped -->
       <div style="
         position: absolute;
         top: ${crop}px;                /* crop variable above */
@@ -28,8 +27,7 @@ const defaultIcon = L.divIcon({
         background-position: 0 -${crop}px;         /* crop variable above */
         background-repeat: no-repeat;
       "></div>
-
-      <-- Second image: EMPTY marker outline -->
+      
       <div style="
         position: absolute;
         top: 0;
