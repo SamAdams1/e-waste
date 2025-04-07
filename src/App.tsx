@@ -35,8 +35,8 @@ function App() {
         />
         <h1>EWaste</h1>
         <div className="headerButtons">
-          <button onClick={() => setCurrentPage("map")}>Map</button>
-          <button onClick={() => setCurrentPage("database")}>Database</button>
+          <a><button onClick={() => setCurrentPage("map")}>Map</button></a>
+          <a><button onClick={() => setCurrentPage("database")}>Inventory</button></a>
         </div>
       </div>
       <div>{currentPage == "map" ? <MapPage /> : <DatabasePage />}</div>

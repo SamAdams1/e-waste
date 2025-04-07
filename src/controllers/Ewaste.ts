@@ -4,15 +4,15 @@ import Ewaste from "../models/Ewaste";
 
 const createEwaste = (req: Request, res: Response, next: NextFunction) => {
     const { type, weight, battery, data_wiped, bin } = req.body;
+    const _id = new mongoose.Types.ObjectId();
 
     const ewaste = new Ewaste({
-        _id: new mongoose.Types.ObjectId(),
-        type, weight, battery, data_wiped, bin
+        _id, type, weight, battery, data_wiped, bin
     });
 
     return ewaste
         .save()
-        .then((ewaste) => res.status(201).json({ ewaste }))
+        .then((ewaste) => res.status(201).json(_id))
         .catch((error) => res.status(500).json({ error }));
 };
 
