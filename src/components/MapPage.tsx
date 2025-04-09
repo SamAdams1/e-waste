@@ -4,14 +4,45 @@ import "leaflet/dist/leaflet.css"; // Import Leaflet styles
 import L, { map } from "leaflet";
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon from "/src/assets/FullMarker.png";
+import markerIcon2 from "/src/assets/EmptyMarker.png";
 
-const defaultIcon = L.icon({
-  iconUrl: markerIcon,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+var crop = 15; //change the crop values here
+
+const defaultIcon = L.divIcon({
+  className: "",
+  iconSize: [50, 50],
+  iconAnchor: [25, 50],
+  html: `
+    <div style="position: relative; width: 50px; height: 50px;">
+      
+      <div style="
+        position: absolute;
+        top: ${crop}px;                /* crop variable above */
+        left: 0;
+        width: 50px;
+        height: 50px;
+        background-image: url('${markerIcon}');
+        background-size: 50px 50px;
+        background-position: 0 -${crop}px;         /* crop variable above */
+        background-repeat: no-repeat;
+      "></div>
+      
+      <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50px;
+        height: 50px;
+        background-image: url('${markerIcon2}');
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.7;
+      "></div>
+
+    </div>
+  `
 });
-
 
 
 L.Marker.prototype.options.icon = defaultIcon;
