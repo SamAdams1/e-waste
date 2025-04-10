@@ -85,11 +85,9 @@ const MapPage = () => {
 
         />
         {buildingPositions.map((building: any, index) => (
-            <>
           <CustomMarker crop={index*5} latLon={building.latLon} key={building.buildingName}>
             <Popup> {building.buildingName} </Popup>
           </CustomMarker>
-            </>
         ))
         
         }

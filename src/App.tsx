@@ -1,27 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
-import Header from "./components/Header";
 import MapPage from "./components/MapPage";
 import DatabasePage from "./components/DatabasePage";
-import { map } from "leaflet";
 import About from "./components/About";
 import Admin from "./components/Admin";
 
-const localKey = "ewasteCount";
-function getData() {
-  let localCount = localStorage.getItem(localKey);
-
-  if (localCount) {
-    console.log(localCount);
-    return parseInt(localCount);
-  } else {
-    localStorage.setItem(localKey, "0");
-    return 0;
-  }
-}
 
 function App() {
-  const [data, setData] = useState(getData);
   const [currentPage, setCurrentPage] = useState<keyof typeof pages>("database");
 
   const pages = {"map": <MapPage />, 
@@ -29,10 +14,6 @@ function App() {
     "about": <About />,
     "admin": <Admin />,
   };
-
-  useEffect(() => {
-    localStorage.setItem(localKey, data.toString());
-  }, [data]);
 
   return (
     <>
