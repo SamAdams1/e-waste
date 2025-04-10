@@ -4,12 +4,21 @@ import Card from "./Card";
 
 const databaseSchema = ["id", "type", "weight", "battery", "data_wiped", "bin"]; //column names
 
-interface mongoResponse { ewaste: [IEwaste]}
-
+interface mongoResponse {
+  ewaste: [IEwaste];
+}
 
 const DatabasePage = () => {
   const [databaseData, setDatabaseData] = useState<[IEwaste]>();
-  
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState<Partial<IEwaste>>({
+    type: "",
+    weight: 0,
+    battery: false,
+    data_wiped: false,
+    bin: 0,
+  });
+
   const getDatabaseData = async (): Promise<[IEwaste] | undefined> => {
     try {
       const response = await fetch("http://localhost:9090/ewaste/get");
@@ -18,24 +27,22 @@ const DatabasePage = () => {
       }
       const data: mongoResponse = await response.json();
       return data.ewaste;
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error);
       return undefined;
     }
   };
 
-  // update a row's data
   const createEwaste = async (createFields: Partial<IEwaste>) => {
     try {
       const response = await fetch(`http://localhost:9090/ewaste/create`, {
-        method: "POST", 
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(createFields),
       });
-      console.log(response)
+      console.log(response);
       if (!response.ok) {
         throw new Error(`Failed to create ewaste`);
       }
@@ -43,19 +50,18 @@ const DatabasePage = () => {
       console.error(error);
     }
   };
-  
-  function createFields() {
-    const createFields = { type: "createlaptoptest", weight: 100, battery: true, data_wiped: true, bin: 7};
-    createEwaste(createFields);
-    // databaseData?.push(createFields)
+
+  const handleCreate = () => {
+    createEwaste(formData);
+    setShowModal(false);
     setTimeout(() => {
-      fetchData()
+      fetchData();
     }, 100);
-  }
+  };
 
   const fetchData = async () => {
     const data = await getDatabaseData();
-    console.log(data)
+    console.log(data);
     setDatabaseData(data);
   };
 
@@ -63,22 +69,82 @@ const DatabasePage = () => {
     fetchData();
   }, []);
 
-  
-
-  return !databaseData ? (<>loading...</>) : (
+  return !databaseData ? (
+    <>loading...</>
+  ) : (
     <div>
-      <button onClick={createFields}>Create</button>
+      <button onClick={() => setShowModal(true)}>Create</button>
       <div className="table-container">
-          {databaseData.map((obj, index) => (
-            <div className="card" key={index + obj.type}>
-            <Card
-              key={index + obj.type}
-              data={obj}
-              fetchData={fetchData}
-              />
-              </div>
-          ))}
+        {databaseData.map((obj, index) => (
+          <div className="card" key={index + obj.type}>
+            <Card key={index + obj.type} data={obj} fetchData={fetchData} />
+          </div>
+        ))}
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Create Ewaste</h2>
+            <form>
+              <label>
+                Type:
+                <input
+                  type="text"
+                  value={formData.type}
+                  onChange={(e) =>
+                    setFormData({ ...formData, type: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Weight:
+                <input
+                  type="number"
+                  value={formData.weight}
+                  onChange={(e) =>
+                    setFormData({ ...formData, weight: parseInt(e.target.value) })
+                  }
+                />
+              </label>
+              <label>
+                Battery:
+                <input
+                  type="checkbox"
+                  checked={formData.battery}
+                  onChange={(e) =>
+                    setFormData({ ...formData, battery: e.target.checked })
+                  }
+                />
+              </label>
+              <label>
+                Data Wiped:
+                <input
+                  type="checkbox"
+                  checked={formData.data_wiped}
+                  onChange={(e) =>
+                    setFormData({ ...formData, data_wiped: e.target.checked })
+                  }
+                />
+              </label>
+              <label>
+                Bin:
+                <input
+                  type="number"
+                  value={formData.bin}
+                  onChange={(e) =>
+                    setFormData({ ...formData, bin: parseInt(e.target.value) })
+                  }
+                />
+              </label>
+            </form>
+            <div className="modal-buttons">
+              <button onClick={handleCreate}>Submit</button>
+              <button onClick={() => setShowModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
