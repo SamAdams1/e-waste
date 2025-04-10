@@ -6,50 +6,16 @@ import L, { map } from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import markerIcon from "/src/assets/FullMarker.png";
 import markerIcon2 from "/src/assets/EmptyMarker.png";
-
-var crop = 15; //change the crop values here
-
-const defaultIcon = L.divIcon({
-  className: "",
-  iconSize: [50, 50],
-  iconAnchor: [25, 50],
-  html: `
-    <div style="position: relative; width: 50px; height: 50px;">
-      
-      <div style="
-        position: absolute;
-        top: ${crop}px;                /* crop variable above */
-        left: 0;
-        width: 50px;
-        height: 50px;
-        background-image: url('${markerIcon}');
-        background-size: 50px 50px;
-        background-position: 0 -${crop}px;         /* crop variable above */
-        background-repeat: no-repeat;
-      "></div>
-      
-      <div style="
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 50px;
-        height: 50px;
-        background-image: url('${markerIcon2}');
-        background-size: contain;
-        background-repeat: no-repeat;
-        opacity: 0.7;
-      "></div>
-
-    </div>
-  `
-});
+import CustomMarker from "./CustomMarker";
 
 
-L.Marker.prototype.options.icon = defaultIcon;
+interface buildings {buildingName: string, latLon: [number, number]};
+
+
 // 43.03460, -71.452031
 const MapPage = () => {
   const center: [number, number] = [43.040755, -71.451845]; // Default position (London)
-  const buildingPositions: any = [
+  const buildingPositions: buildings[] = [
     { 
       buildingName: "Student Center",
       latLon: [43.03975424423455, -71.4537540534146]
@@ -118,10 +84,12 @@ const MapPage = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
         />
-        {buildingPositions.map((building: any) => (
-          <Marker position={building.latLon}>
-          <Popup> {building.buildingName} </Popup>
-        </Marker>
+        {buildingPositions.map((building: any, index) => (
+            <>
+          <CustomMarker crop={index*5} latLon={building.latLon} key={building.buildingName}>
+            <Popup> {building.buildingName} </Popup>
+          </CustomMarker>
+            </>
         ))
         
         }

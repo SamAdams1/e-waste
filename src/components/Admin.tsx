@@ -27,7 +27,6 @@ const Admin: React.FC = () => {
         Admin Dashboard
       </Typography>
       <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
           <Paper elevation={3} sx={{ padding: 2 }}>
             <Typography variant="h6" gutterBottom>
               User Growth
@@ -41,7 +40,6 @@ const Admin: React.FC = () => {
               <Line type="monotone" dataKey="users" stroke="#8884d8" />
             </LineChart>
           </Paper>
-        </Grid>
         <Grid item xs={12} md={6}>
           <Paper elevation={3} sx={{ padding: 2 }}>
             <Typography variant="h6" gutterBottom>
