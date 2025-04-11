@@ -1,6 +1,7 @@
 import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Request, Response } from 'express';
 import { IEwaste } from '../models/Ewaste';
+import { IBins } from '../models/Bins';
 import Logging from '../library/Logging';
 
 export const ValidateSchema = (schema: ObjectSchema) => {
@@ -30,6 +31,20 @@ export const Schemas = {
             battery: Joi.boolean().required(),
             data_wiped: Joi.boolean().required(),
             bin: Joi.number().required()
+        })
+    },
+    bins: {
+        create: Joi.object<IBins>({
+            weight: Joi.number().required(),
+            fullness: Joi.number().required(),
+            location: Joi.any().required(),
+            online: Joi.boolean().required()
+        }),
+        update: Joi.object({
+            weight: Joi.number().required(),
+            fullness: Joi.number().required(),
+            location: Joi.any().required(),
+            online: Joi.boolean().required()
         })
     }
 };

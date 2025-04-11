@@ -10,7 +10,7 @@
 import serial.tools.list_ports as coms
 import serial, re, os, json
 
-print("Welcome to the E6 Interface!\n")
+print("Welcome to the E-Bin Serial Interface!\n")
 
 # User identifies bin being monitored by this script
 print("Enter the number of the bin you are monitoring below")
