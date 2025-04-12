@@ -103,7 +103,7 @@ const DatabasePage = () => {
                   type="number"
                   value={formData.weight}
                   onChange={(e) =>
-                    setFormData({ ...formData, weight: parseInt(e.target.value) })
+                    setFormData({ ...formData, weight: parseFloat(e.target.value) })
                   }
                 />
               </label>

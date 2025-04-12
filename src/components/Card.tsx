@@ -24,7 +24,7 @@ const Card = ({ data, fetchData }: CardProps) => {
 
   function saveChanges() {
     // Send crud call to update the mongodb database
-    const updatedFields = { type: editType, weight: parseInt(editWeight), battery: editBattery, data_wiped: editDataWiped, bin: parseInt(editBin)};
+    const updatedFields = { type: editType, weight: parseFloat(editWeight), battery: editBattery, data_wiped: editDataWiped, bin: parseInt(editBin)};
     updateEwaste(updatedFields);
 
     // stop editing
