@@ -102,29 +102,6 @@ const Admin: React.FC = () => {
             <Line type="monotone" dataKey="users" stroke="#8884d8" />
           </LineChart>
         </Paper>
-        <Grid item xs={12}>
-          <Paper elevation={3} sx={{ padding: 2 }}>
-            <Typography variant="h6" gutterBottom>
-              Types of E-Waste
-            </Typography>
-            <PieChart width={400} height={300}>
-              <Pie
-                data={pieData}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-                dataKey="value"
-                label
-              >
-                {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </Paper>
-        </Grid>
       </Grid>
     </Box>
   );

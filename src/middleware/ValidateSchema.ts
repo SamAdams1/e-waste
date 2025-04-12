@@ -35,12 +35,14 @@ export const Schemas = {
     },
     bins: {
         create: Joi.object<IBins>({
+            name: Joi.string().required(),
             weight: Joi.number().required(),
             fullness: Joi.number().required(),
             location: Joi.any().required(),
             online: Joi.boolean().required()
         }),
         update: Joi.object({
+            name: Joi.string().required(),
             weight: Joi.number().required(),
             fullness: Joi.number().required(),
             location: Joi.any().required(),

@@ -1,25 +1,45 @@
 import { useState, useEffect } from "react";
+import Bins, { IBins } from "../models/Bins";
 
 import "leaflet/dist/leaflet.css"; // Import Leaflet styles
 import L, { map } from "leaflet";
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import markerIcon from "/src/assets/FullMarker.png";
-import markerIcon2 from "/src/assets/EmptyMarker.png";
 import CustomMarker from "./CustomMarker";
-
 
 interface buildings {buildingName: string, latLon: [number, number]};
 
+interface mongoResponse {
+  bins: [IBins];
+}
 
 // 43.03460, -71.452031
 const MapPage = () => {
+  const [binData, setBinData] = useState<[IBins]>();
+  const getBinData = async (): Promise<[IBins] | undefined> => {
+    try {
+      const response = await fetch("http://localhost:9090/bins/get");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: mongoResponse = await response.json();
+      return data.bins;
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  };
+
   const center: [number, number] = [43.040755, -71.451845]; // Default position (London)
   const buildingPositions: buildings[] = [
     { 
       buildingName: "Student Center",
       latLon: [43.03975424423455, -71.4537540534146]
     },
+    // {
+    //   buildingName: binData?.[0].name,
+    //   latLon: binData?.[0].location
+    // },
     { 
       buildingName: "Kingston",
       latLon: [43.0407514823724, -71.45464796843052]
@@ -73,8 +93,19 @@ const MapPage = () => {
     })
   }
 
+  const fetchBinData = async () => {
+    const data = await getBinData();
+    if (data) {
+      const fullness = data.map((item) => item.fullness);
+      console.log("Fullness:", fullness[0]);
+    }
+    console.log(data);
+    setBinData(data);
+  };
+  
   useEffect(() => {
     console.log(mapData)
+    fetchBinData();
   }, [mapData]);
   
   return (
@@ -84,13 +115,15 @@ const MapPage = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
         />
-        {buildingPositions.map((building: any, index) => (
-          <CustomMarker crop={index*5} latLon={building.latLon} key={building.buildingName}>
-            <Popup> {building.buildingName} </Popup>
-          </CustomMarker>
-        ))
-        
-        }
+        {buildingPositions.map((building: any, index) => {
+          // if building.buildingName = "Student Center" then cropvalue is 32, else cropvalue is index * 5
+          const cropValue = building.buildingName === "Student Center" ? binData?.[0].fullness : index * 5;
+          return (
+            <CustomMarker crop={cropValue} latLon={building.latLon} key={building.buildingName}>
+              <Popup>{building.buildingName}</Popup>
+            </CustomMarker>
+          );
+        })}
       </MapContainer>
   );
 };

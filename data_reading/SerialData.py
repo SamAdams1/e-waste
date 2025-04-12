@@ -82,9 +82,9 @@ while True:
         # # Extract numeric values sent from the Arduino and save as a list
         # readings = re.findall(r'\d+', data)
 
-        readings = [0, 0, 0, 0]
+        readings = [0, 0, 0, 0, 0]
 
-        for x in range(0,4):
+        for x in range(0,5):
             # Read the data sent by the Arduino and decode result into strings
             data = systemSerial.readline() 
             data = data.decode('utf').rstrip("\n")
@@ -95,20 +95,23 @@ while True:
                 readings[x] = float(match.group())
 
         # Save the readings list as integer values
-        sensor1, sensor2, sensor3, sensor4 = readings
+        sensor1, sensor2, sensor3, sensor4, sensor5 = readings
 
         # Display results
         print("Sensor 1: " + str(sensor1) + "cm")
         print("Sensor 2: " + str(sensor2) + "cm")
         print("Sensor 3: " + str(sensor3) + "cm")
         print("Sensor 4: " + str(sensor4) + "cm")
+        print("Sensor 5: " + str(sensor5) + "kg")
 
         # Average distance modules to make data more interpretable
         avgDistance = ((sensor1 + sensor2 + sensor3 + sensor4)/4)
 
         print("Distance: " + str(avgDistance) + "cm")
+        print("Weight: " + str(sensor5) + "kg")
 
-        binInfo["Distance"] = avgDistance
+        binInfo["Distance"] = avgDistance * 0.393701
+        binInfo["Weight"] = sensor5 * 2.20462
 
         with open(os.path.join(os.getcwd(), jsonName), 'w+') as file:
             json.dump(binInfo, file)
