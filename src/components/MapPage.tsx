@@ -105,7 +105,9 @@ const MapPage = () => {
   
   useEffect(() => {
     console.log(mapData)
-    fetchBinData();
+    setInterval(() => {
+      fetchBinData();
+    }, 1000);
   }, [mapData]);
   
   return (
