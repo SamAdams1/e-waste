@@ -7,7 +7,7 @@ import Admin from "./components/Admin";
 
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<keyof typeof pages>("database");
+  const [currentPage, setCurrentPage] = useState<keyof typeof pages>("map");
 
   const pages = {"map": <MapPage />, 
     "database": <DatabasePage />,

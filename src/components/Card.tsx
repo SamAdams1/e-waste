@@ -8,6 +8,7 @@ interface CardProps {
 
 
 const Card = ({ data, fetchData }: CardProps) => {
+  const base = `http://${window.location.hostname}:9090`;
   const [editing, setEditing] = useState<boolean>(false);
 
   const [editType, setEditType] = useState(data.type);
@@ -46,7 +47,7 @@ const Card = ({ data, fetchData }: CardProps) => {
   // update a row's data
   const updateEwaste = async (updatedFields: Partial<IEwaste>) => {
     try {
-      const response = await fetch(`http://localhost:9090/ewaste/update/${data._id}`, {
+      const response = await fetch(`${base}/ewaste/update/${data._id}`, {
         method: "PATCH", 
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +65,7 @@ const Card = ({ data, fetchData }: CardProps) => {
   // update a row's data
   const deleteEwaste = async () => {
     try {
-      const response = await fetch(`http://localhost:9090/ewaste/delete/${data._id}`, {
+      const response = await fetch(`${base}/ewaste/delete/${data._id}`, {
         method: "DELETE", 
         headers: {
           "Content-Type": "application/json",

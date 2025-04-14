@@ -15,10 +15,11 @@ interface mongoResponse {
 
 // 43.03460, -71.452031
 const MapPage = () => {
+  const base = `http://${window.location.hostname}:9090`;
   const [binData, setBinData] = useState<[IBins]>();
   const getBinData = async (): Promise<[IBins] | undefined> => {
     try {
-      const response = await fetch("http://localhost:9090/bins/get");
+      const response = await fetch(`${base}/bins/get`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
