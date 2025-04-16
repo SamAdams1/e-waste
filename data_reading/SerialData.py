@@ -4,23 +4,47 @@
 #  Project: ScEnE - E-Bins by E6
 #  File Description: A Python script that reads data from an
 #                    Arduino module and sends it to MondoDB
-#  Last Modified: April 8, 2024
+#  Last Modified: April 16, 2024
 # ************************************************************
 
 import serial.tools.list_ports as coms
-import serial, re, os, json
+import serial, re, os, json, pymongo
+from pymongo import MongoClient, InsertOne
+from dotenv import load_dotenv
 
 print("Welcome to the E-Bin Serial Interface!\n")
 
+# Import MongoDB environment from .env
+USERNAME = os.getenv("MONGO_USERNAME")
+PASSWORD = os.getenv("MONGO_PASSWORD")
+
+CONNECTION_STRING = f"mongodb+srv://{USERNAME}:{PASSWORD}@cluster0.us5hu.mongodb.net/?retryWrites=true&w=majority"
+
+# Initiate communications with bins collection
+client = pymongo.MongoClient(CONNECTION_STRING)
+db = client.test # Select Database
+collection = db.bins # Select Collection
+
+# Pull bin documents from MongoDB
+availableBins = list(collection.find({}))
+
 # User identifies bin being monitored by this script
 print("Enter the number of the bin you are monitoring below")
-binNo = input("Bin #: ")
+print("Available Bins:")
 
-jsonName = "data_reading\\bin" + str(binNo) + ".json" 
+# Print each existing bin entry for a user to select from
+for x, availableBin in enumerate(availableBins, 1):
+    print("Bin #" + str(x) + ": " + f"{availableBin['name']} (ID: {availableBin['_id']})")
+
+binNo = input("Bin #: ") # Designate the number of the bin to be easily understandable
+binID = str(availableBins[(int(binNo))-1]['_id']) # Match selected bin with DB entry
+
+jsonName = "data_reading\\json\\bin" + str(binNo) + ".json" 
 file = os.path.join(os.getcwd(), jsonName)
 # print(file)
 
 binInfo = {
+    "_id": "",
     "Distance": 0.0,
     "Weight" : 0.0
 }
@@ -75,13 +99,6 @@ print("Successfully reading from: " + uPort)
 # Continuously read from the Arduino
 while True:
     if systemSerial.in_waiting:
-        # # Read the data sent by the Arduino and decode result into strings
-        # data = systemSerial.readline() 
-        # data = data.decode('utf').rstrip("\n")
-
-        # # Extract numeric values sent from the Arduino and save as a list
-        # readings = re.findall(r'\d+', data)
-
         readings = [0, 0, 0, 0, 0]
 
         for x in range(0,5):
@@ -110,8 +127,11 @@ while True:
         print("Distance: " + str(avgDistance) + "cm")
         print("Weight: " + str(sensor5) + "kg")
 
+        # Update Dictionary with recorded values
+        binInfo["_id"] = binID
         binInfo["Distance"] = avgDistance * 0.393701
         binInfo["Weight"] = sensor5 * 2.20462
 
+        # Write recorded values to respective json file
         with open(os.path.join(os.getcwd(), jsonName), 'w+') as file:
             json.dump(binInfo, file)
