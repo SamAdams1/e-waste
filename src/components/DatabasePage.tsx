@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { IEwaste } from "../models/Ewaste";
 import Card from "./Card";
+import Login from "./Login";
 
-const databaseSchema = ["id", "type", "weight", "battery", "data_wiped", "bin"]; //column names
+const databaseSchema = ["id", "type", "weight", "battery", "data_wiped", "bin"];
 
 interface mongoResponse {
   ewaste: [IEwaste];
 }
 
 const DatabasePage = () => {
-  const [databaseData, setDatabaseData] = useState<[IEwaste]>();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [databaseData, setDatabaseData] = useState<IEwaste[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState<Partial<IEwaste>>({
     type: "",
@@ -19,9 +21,11 @@ const DatabasePage = () => {
     bin: 0,
   });
 
+  const base = `http://${window.location.hostname}:9090`;
+
   const getDatabaseData = async (): Promise<[IEwaste] | undefined> => {
     try {
-      const response = await fetch("http://localhost:9090/ewaste/get");
+      const response = await fetch(`${base}/ewaste/get`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -35,14 +39,13 @@ const DatabasePage = () => {
 
   const createEwaste = async (createFields: Partial<IEwaste>) => {
     try {
-      const response = await fetch(`http://localhost:9090/ewaste/create`, {
+      const response = await fetch(`${base}/ewaste/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(createFields),
       });
-      console.log(response);
       if (!response.ok) {
         throw new Error(`Failed to create ewaste`);
       }
@@ -54,24 +57,21 @@ const DatabasePage = () => {
   const handleCreate = () => {
     createEwaste(formData);
     setShowModal(false);
-    setTimeout(() => {
-      fetchData();
-    }, 100);
+    fetchData();
   };
 
   const fetchData = async () => {
     const data = await getDatabaseData();
-    console.log(data);
-    setDatabaseData(data);
+    setDatabaseData(data || []);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isLoggedIn) {
+      fetchData();
+    }
+  }, [isLoggedIn]);
 
-  return !databaseData ? (
-    <>loading...</>
-  ) : (
+  return isLoggedIn ? (
     <div>
       <button onClick={() => setShowModal(true)}>Create</button>
       <div className="table-container">
@@ -146,6 +146,8 @@ const DatabasePage = () => {
         </div>
       )}
     </div>
+  ) : (
+    <Login onLogin={() => setIsLoggedIn(true)} />
   );
 };
 
